@@ -1,0 +1,333 @@
+/* =========================================================
+   DAP – Digital Adoption Platform  |  styles.css
+   ========================================================= */
+
+/* ── Variables ──────────────────────────────────────────── */
+:root {
+  --dap-primary:        #4f46e5;
+  --dap-primary-hover:  #4338ca;
+  --dap-secondary:      #e5e7eb;
+  --dap-secondary-hover:#d1d5db;
+  --dap-success:        #16a34a;
+  --dap-text:           #111827;
+  --dap-text-muted:     #6b7280;
+  --dap-bg:             #ffffff;
+  --dap-border:         #e5e7eb;
+  --dap-shadow:         0 8px 24px rgba(0, 0, 0, 0.15);
+  --dap-radius:         10px;
+  --dap-font:           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --dap-highlight-color:#4f46e5;
+  --dap-z:              2147483640;
+}
+
+/* ── Overlay semitransparente ────────────────────────────── */
+.dap-overlay {
+  display:          none;
+  position:         fixed;
+  inset:            0;
+  background:       rgba(0, 0, 0, 0.45);
+  z-index:          calc(var(--dap-z) - 10);
+  pointer-events:   none;
+  animation:        dap-fade-in 0.2s ease;
+}
+
+/* ── Resaltado del elemento objetivo ─────────────────────── */
+.dap-highlight {
+  display:          none;
+  position:         absolute;
+  border:           3px solid var(--dap-highlight-color);
+  border-radius:    6px;
+  box-shadow:       0 0 0 4px rgba(79, 70, 229, 0.25);
+  z-index:          calc(var(--dap-z) - 5);
+  pointer-events:   none;
+  transition:       all 0.25s ease;
+  animation:        dap-pulse 1.8s infinite;
+}
+
+@keyframes dap-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.25); }
+  50%       { box-shadow: 0 0 0 8px rgba(79, 70, 229, 0.10); }
+}
+
+/* ── Tooltip principal ───────────────────────────────────── */
+.dap-tooltip {
+  display:          none;
+  position:         absolute;
+  width:            300px;
+  background:       var(--dap-bg);
+  border:           1px solid var(--dap-border);
+  border-radius:    var(--dap-radius);
+  box-shadow:       var(--dap-shadow);
+  font-family:      var(--dap-font);
+  font-size:        14px;
+  color:            var(--dap-text);
+  z-index:          var(--dap-z);
+  animation:        dap-pop-in 0.2s ease;
+  overflow:         hidden;
+}
+
+@keyframes dap-pop-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.dap-tooltip__header {
+  display:          flex;
+  align-items:      center;
+  justify-content:  space-between;
+  padding:          12px 14px 8px;
+  background:       var(--dap-primary);
+  color:            #fff;
+}
+
+.dap-tooltip__title {
+  font-weight:      600;
+  font-size:        14px;
+  flex:             1;
+}
+
+.dap-tooltip__close {
+  background:       transparent;
+  border:           none;
+  color:            rgba(255,255,255,0.8);
+  font-size:        16px;
+  cursor:           pointer;
+  line-height:      1;
+  padding:          0 0 0 8px;
+  transition:       color 0.15s;
+}
+.dap-tooltip__close:hover { color: #fff; }
+
+.dap-tooltip__body {
+  margin:           0;
+  padding:          12px 14px;
+  line-height:      1.55;
+  color:            var(--dap-text);
+}
+
+.dap-tooltip__footer {
+  display:          flex;
+  align-items:      center;
+  justify-content:  space-between;
+  padding:          8px 14px 12px;
+  border-top:       1px solid var(--dap-border);
+  gap:              8px;
+}
+
+.dap-tooltip__counter {
+  font-size:        12px;
+  color:            var(--dap-text-muted);
+  white-space:      nowrap;
+}
+
+.dap-tooltip__actions {
+  display:          flex;
+  gap:              8px;
+}
+
+/* ── Botones ─────────────────────────────────────────────── */
+.dap-btn {
+  border:           none;
+  border-radius:    6px;
+  padding:          6px 14px;
+  font-size:        13px;
+  font-weight:      500;
+  cursor:           pointer;
+  transition:       background 0.15s, transform 0.1s;
+  font-family:      var(--dap-font);
+}
+
+.dap-btn:active { transform: scale(0.97); }
+
+.dap-btn--primary {
+  background:       var(--dap-primary);
+  color:            #fff;
+}
+.dap-btn--primary:hover  { background: var(--dap-primary-hover); }
+.dap-btn--primary:disabled {
+  background:       #a5b4fc;
+  cursor:           not-allowed;
+}
+
+.dap-btn--secondary {
+  background:       var(--dap-secondary);
+  color:            var(--dap-text);
+}
+.dap-btn--secondary:hover { background: var(--dap-secondary-hover); }
+.dap-btn--secondary:disabled {
+  opacity:          0.45;
+  cursor:           not-allowed;
+}
+
+/* ── Panel lateral de pasos ──────────────────────────────── */
+.dap-panel {
+  position:         fixed;
+  top:              50%;
+  right:            0;
+  transform:        translateY(-50%);
+  width:            220px;
+  background:       var(--dap-bg);
+  border:           1px solid var(--dap-border);
+  border-right:     none;
+  border-radius:    var(--dap-radius) 0 0 var(--dap-radius);
+  box-shadow:       var(--dap-shadow);
+  font-family:      var(--dap-font);
+  font-size:        13px;
+  z-index:          calc(var(--dap-z) - 3);
+  overflow:         hidden;
+  animation:        dap-slide-in-right 0.25s ease;
+}
+
+@keyframes dap-slide-in-right {
+  from { transform: translateY(-50%) translateX(100%); opacity: 0; }
+  to   { transform: translateY(-50%) translateX(0);    opacity: 1; }
+}
+
+.dap-panel__header {
+  display:          flex;
+  align-items:      center;
+  gap:              6px;
+  padding:          10px 12px;
+  background:       var(--dap-primary);
+  color:            #fff;
+  font-weight:      600;
+}
+
+.dap-panel__icon { font-size: 16px; }
+
+.dap-panel__close {
+  margin-left:      auto;
+  background:       transparent;
+  border:           none;
+  color:            rgba(255,255,255,0.8);
+  font-size:        15px;
+  cursor:           pointer;
+  line-height:      1;
+  transition:       color 0.15s;
+}
+.dap-panel__close:hover { color: #fff; }
+
+.dap-panel__list {
+  list-style:       none;
+  margin:           0;
+  padding:          8px 0;
+  max-height:       360px;
+  overflow-y:       auto;
+}
+
+.dap-panel__step {
+  display:          flex;
+  align-items:      center;
+  gap:              8px;
+  padding:          8px 12px;
+  cursor:           pointer;
+  transition:       background 0.12s;
+  border-left:      3px solid transparent;
+}
+
+.dap-panel__step:hover {
+  background:       #f3f4f6;
+}
+
+.dap-panel__step--active {
+  background:       #eef2ff;
+  border-left-color: var(--dap-primary);
+  font-weight:      600;
+  color:            var(--dap-primary);
+}
+
+.dap-panel__step-num {
+  display:          inline-flex;
+  align-items:      center;
+  justify-content:  center;
+  width:            22px;
+  height:           22px;
+  border-radius:    50%;
+  background:       var(--dap-secondary);
+  font-size:        11px;
+  font-weight:      700;
+  flex-shrink:      0;
+  color:            var(--dap-text-muted);
+}
+
+.dap-panel__step--active .dap-panel__step-num {
+  background:       var(--dap-primary);
+  color:            #fff;
+}
+
+.dap-panel__step-title {
+  font-size:        12px;
+  line-height:      1.3;
+}
+
+/* ── Botón lanzador flotante (esquina superior derecha) ───── */
+.dap-launcher {
+  position:         fixed !important;
+  top:              80px !important;
+  right:            20px !important;
+  bottom:           auto !important;
+  left:             auto !important;
+  width:            48px !important;
+  height:           48px !important;
+  border-radius:    50% !important;
+  background:       var(--dap-primary) !important;
+  color:            #fff !important;
+  border:           none !important;
+  font-size:        0 !important;
+  font-weight:      700 !important;
+  cursor:           pointer !important;
+  box-shadow:       0 4px 16px rgba(79, 70, 229, 0.5) !important;
+  z-index:          2147483647 !important;
+  display:          flex !important;
+  align-items:      center !important;
+  justify-content:  center !important;
+  transition:       transform 0.2s, background 0.2s;
+  outline:          none;
+  padding:          0 !important;
+  margin:           0 !important;
+  transform:        none;
+}
+.dap-launcher:hover {
+  background:       var(--dap-primary-hover) !important;
+  transform:        scale(1.1) !important;
+}
+
+/* ── Banner de éxito ─────────────────────────────────────── */
+.dap-banner {
+  position:         fixed;
+  bottom:           28px;
+  left:             50%;
+  transform:        translateX(-50%);
+  background:       var(--dap-success);
+  color:            #fff;
+  padding:          12px 20px;
+  border-radius:    8px;
+  font-family:      var(--dap-font);
+  font-size:        14px;
+  font-weight:      500;
+  display:          flex;
+  align-items:      center;
+  gap:              12px;
+  box-shadow:       0 4px 16px rgba(0,0,0,0.2);
+  z-index:          var(--dap-z);
+  animation:        dap-fade-in 0.3s ease;
+}
+
+.dap-banner__close {
+  background:       transparent;
+  border:           none;
+  color:            rgba(255,255,255,0.85);
+  font-size:        16px;
+  cursor:           pointer;
+  line-height:      1;
+  padding:          0;
+  margin-left:      auto;
+  transition:       color 0.15s;
+}
+.dap-banner__close:hover { color: #fff; }
+
+/* ── Animación genérica ──────────────────────────────────── */
+@keyframes dap-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

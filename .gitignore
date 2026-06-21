@@ -1,0 +1,14 @@
+# Archivos de sistema Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# VS Code
+.vscode/
+
+# Node (por si se agrega build en el futuro)
+node_modules/
+npm-debug.log*
+
+# macOS
+.DS_Store

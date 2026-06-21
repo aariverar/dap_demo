@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "DAP - Santander Consumer Bank - Bantotal",
+  "version": "1.1.0",
+  "description": "Digital Adoption Platform: guía paso a paso para el flujo de registro en Bantotal.",
+  "permissions": ["activeTab", "storage"],
+  "host_permissions": [
+    "https://www.opencart.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.opencart.com/*"],
+      "js": [
+        "src/flows/login.js",
+        "src/flows/register.js",
+        "src/core/dap-core.js"
+        ],
+      "css": ["src/styles/styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "DAP Guide"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*.png"],
+      "matches": ["https://www.opencart.com/*"]
+    }
+  ]
+}
