@@ -171,91 +171,13 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <div class="footer">
-    DAP v1.0 &nbsp;·&nbsp; Santander Consumer Bank Guide
+  <!-- Footer: versión leída dinámicamente desde manifest.json por popup.js -->
+  <div class="footer" id="appFooter">
+    Santander Consumer Bank Guide
   </div>
 
-  <script>
-    /**
-     * El popup NO tiene copia de los flujos.
-     * Consulta al content script (dap-core.js) a través de mensajes,
-     * que a su vez lee window.__DAP_FLOWS__ cargado por flows/*.js.
-     * Así agregar un nuevo flujo solo requiere crear su archivo en flows/.
-     */
-
-    const flowListEl = document.getElementById("flowList");
-    const statusDot  = document.getElementById("statusDot");
-    const statusText = document.getElementById("statusText");
-
-    // ── Obtener la pestaña activa y pedir los flujos al content script ──
-    chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-      if (!tab || !tab.id) {
-        setStatus(false, "No se puede acceder a esta pestaña.");
-        return;
-      }
-
-      const tabId = tab.id;
-
-      // Escuchar la respuesta del content script
-      chrome.runtime.onMessage.addListener(function handler(msg) {
-        if (msg.action !== "flowsResponse") return;
-        chrome.runtime.onMessage.removeListener(handler);
-        renderFlows(msg.flows, tabId);
-      });
-
-      // Pedir los flujos disponibles en la página actual
-      chrome.tabs.sendMessage(tabId, { action: "getFlows" }, (response) => {
-        if (chrome.runtime.lastError) {
-          // El content script aún no está activo en esta página
-          setStatus(false, "Página no compatible con DAP.");
-        }
-      });
-    });
-
-    function renderFlows(flows, tabId) {
-      if (!flows || flows.length === 0) {
-        setStatus(false, "Sin flujos para esta página.");
-        return;
-      }
-
-      setStatus(true, `${flows.length} flujo${flows.length > 1 ? "s" : ""} disponible${flows.length > 1 ? "s" : ""}`);
-      flowListEl.innerHTML = "";
-
-      flows.forEach(flow => {
-        const card = document.createElement("div");
-        card.className = "flow-card";
-        card.innerHTML = `
-          <span class="flow-card__icon">${flow.icon || "🗺️"}</span>
-          <div class="flow-card__info">
-            <div class="flow-card__name">${flow.name}</div>
-            <div class="flow-card__steps">${flow.steps} pasos</div>
-          </div>
-          <button class="flow-card__btn" data-id="${flow.id}">Iniciar</button>
-        `;
-
-        card.querySelector("button").addEventListener("click", (e) => {
-          const btn       = e.currentTarget;
-          const isRunning = btn.classList.contains("flow-card__btn--stop");
-
-          chrome.tabs.sendMessage(tabId, {
-            action:  isRunning ? "stopFlow" : "startFlow",
-            flowId:  flow.id,
-          });
-
-          btn.classList.toggle("flow-card__btn--stop", !isRunning);
-          btn.textContent = isRunning ? "Iniciar" : "Detener";
-        });
-
-        flowListEl.appendChild(card);
-      });
-    }
-
-    function setStatus(active, text) {
-      statusDot.className    = "status-dot" + (active ? "" : " status-dot--inactive");
-      statusText.textContent = text;
-    }
-  </script>
+  <!-- FIX CSP: script externo en lugar de inline para cumplir con MV3 -->
+  <script src="popup.js"></script>
 
 </body>
 </html>
